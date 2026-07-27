@@ -1,0 +1,21 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    name: Quality Gate | Core
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v6
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - uses: 24dlong/github-actions-library/actions/quality-gate@v3
