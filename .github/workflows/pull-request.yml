@@ -1,0 +1,34 @@
+name: Pull Request Workflow
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    name: Quality Gate | Terraform Modules
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Setup Linter
+        run: make setup-lint
+
+      - name: Check Formatting
+        run: make fmt-check
+
+      - name: Validate
+        run: make validate
+
+      - name: Checkov
+        run: make checkov

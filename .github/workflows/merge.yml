@@ -1,0 +1,25 @@
+name: Merge Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  bump-version:
+    if: ${{ !startsWith(github.event.head_commit.message, 'bump:') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0
+      - uses: commitizen-tools/commitizen-action@0.27.1
+        with:
+          # required to bypass branch protection in user-owned repositories
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      - name: Tag Major Version
+        run: ./scripts/tag-major-version.sh
