@@ -93,7 +93,9 @@ workflow:
 - `checkov` static analysis
 - `terraform-docs` — module `README.md` files are generated/verified, not
   hand maintained, between the `<!-- BEGIN_TF_DOCS -->` / `<!-- END_TF_DOCS
-  -->` markers.
+  -->` markers. Files under `examples/` are excluded from this hook and must
+  not contain a generated `README.md`; document example usage, if needed, in
+  the owning module's `README.md` instead.
 
 ## Release process
 
