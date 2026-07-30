@@ -1,0 +1,18 @@
+# Checkov static-analysis configuration for this repository.
+#
+# These checks are intentionally skipped for every module because they do not
+# apply to the small, internal building-block modules this repository
+# publishes (Terraform state, identity, domain, Lambda, assets, CloudFront):
+#
+# - CKV2_AWS_62: S3 event notifications are unnecessary for private
+#   infrastructure buckets (state, assets) with no downstream event-driven
+#   processing pipeline.
+# - CKV_AWS_144: Cross-region replication is out of scope for the
+#   single-region v1 template; durability is provided by bucket versioning
+#   and lifecycle-managed noncurrent-version retention within the primary
+#   region.
+skip-check:
+  - CKV2_AWS_62
+  - CKV_AWS_144
+compact: true
+quiet: true
