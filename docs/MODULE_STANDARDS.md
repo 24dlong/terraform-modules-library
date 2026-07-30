@@ -97,6 +97,11 @@ workflow:
   not contain a generated `README.md`; document example usage, if needed, in
   the owning module's `README.md` instead.
 
+The exact `terraform`, `terraform-docs`, `checkov`, and `pre-commit` versions
+are pinned once in [`.tool-versions`](../.tool-versions) at the repository
+root and installed via `mise` by both `make setup-lint` and the pull-request
+workflow, so local and CI runs always resolve identical tool versions.
+
 ## Release process
 
 This repository uses [Conventional Commits](https://www.conventionalcommits.org)
