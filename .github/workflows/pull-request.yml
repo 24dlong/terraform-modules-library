@@ -18,4 +18,12 @@ jobs:
         with:
           terraform_wrapper: false
 
+      - name: Setup terraform-docs
+        run: |
+          TERRAFORM_DOCS_VERSION="v0.20.0"
+          curl -fsSL -o terraform-docs.tar.gz "https://github.com/terraform-docs/terraform-docs/releases/download/${TERRAFORM_DOCS_VERSION}/terraform-docs-${TERRAFORM_DOCS_VERSION}-$(uname)-amd64.tar.gz"
+          tar -xzf terraform-docs.tar.gz terraform-docs
+          sudo mv terraform-docs /usr/local/bin/
+          terraform-docs --version
+
       - uses: 24dlong/github-actions-library/actions/quality-gate@v3
