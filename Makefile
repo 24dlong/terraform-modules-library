@@ -1,11 +1,16 @@
 .PHONY: lint setup-lint
 
+# Installs the pinned tool versions from .tool-versions (terraform,
+# terraform-docs, checkov, pre-commit) via mise, plus the repository's git
+# hooks. Idempotent - safe to rerun any time, including after pulling a
+# Renovate version-bump PR that changes .tool-versions.
 setup-lint:
-	pip install pre-commit checkov
-	pre-commit install
-	pre-commit install --hook-type commit-msg
+	command -v mise >/dev/null 2>&1 || curl https://mise.run | sh
+	mise install
+	mise exec -- pre-commit install
+	mise exec -- pre-commit install --hook-type commit-msg
 
 # Runs all pre-commit hooks (formatting, docs, commit lint, terraform
 # fmt/validate/checkov) against the full repository.
 lint:
-	pre-commit run --all-files
+	mise exec -- pre-commit run --all-files

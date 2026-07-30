@@ -1,0 +1,4 @@
+terraform 1.15.8
+terraform-docs 0.24.0
+checkov 3.3.8
+pre-commit 4.6.1

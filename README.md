@@ -41,8 +41,11 @@ module "nextjs_lambda" {
 
 ### Initial setup
 
-Run `make setup-lint` once after cloning to install `pre-commit`, `checkov`,
-and the repository's git hooks.
+Run `make setup-lint` after cloning to install [`mise`](https://mise.jdx.dev/)
+and the tool versions pinned in [`.tool-versions`](.tool-versions)
+(`terraform`, `terraform-docs`, `checkov`, `pre-commit`), plus the
+repository's git hooks. `make setup-lint` is idempotent - safe to rerun any
+time, including after pulling a Renovate PR that bumps `.tool-versions`.
 
 ### Requirements
 
@@ -53,7 +56,8 @@ and the repository's git hooks.
 
 ### Helpful commands
 
-- `make setup-lint` — install `pre-commit`, `checkov`, and git hooks.
+- `make setup-lint` — install the pinned tool versions (via `mise`) and git
+  hooks. Safe to rerun anytime.
 - `make lint` — run all pre-commit hooks (formatting, docs, commit-msg lint,
   Terraform fmt/validate/checkov) against the full repository.
 
@@ -69,3 +73,7 @@ and the repository's git hooks.
   in CI.
 - **Checkov** — static security/misconfiguration analysis for every module and
   example.
+- **mise & `.tool-versions`** — single source of truth for pinned CLI tool
+  versions (`terraform`, `terraform-docs`, `checkov`, `pre-commit`), installed
+  identically by local `make setup-lint` and the pull-request CI workflow, and
+  kept up to date by Renovate.
