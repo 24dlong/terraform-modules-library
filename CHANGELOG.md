@@ -1,3 +1,10 @@
+## 0.2.1 (2026-07-31)
+
+
+- chore(deps): update pre-commit hook pre-commit/pre-commit-hooks to v6 (#11)
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+- ci: manages tooling versions using mise (#8)
+
 ## 0.2.0 (2026-07-30)
 
 
