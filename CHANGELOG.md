@@ -1,3 +1,17 @@
+## 0.3.0 (2026-07-31)
+
+
+- feat(github-oidc): add GitHub Actions OIDC provider and deploy role module (#9)
+- Adds a reusable module creating the token.actions.githubusercontent.com
+OIDC provider plus a least-privilege IAM role scoped to a single GitHub
+repository (and optionally branch) via the sub claim. Supports reusing an
+existing OIDC provider (create_oidc_provider = false) since AWS accounts
+allow only one provider per URL. Grants no permissions itself; callers
+attach their own via managed_policy_arns / inline_policy_json.
+- Includes a runnable example, README updates marking the module implemented,
+and a new MODULE_STANDARDS.md section documenting the account-level-
+singleton input pattern for future modules.
+
 ## 0.2.1 (2026-07-31)
 
 
