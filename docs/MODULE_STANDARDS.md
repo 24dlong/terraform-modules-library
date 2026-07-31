@@ -75,6 +75,17 @@ A floating major-version tag (e.g. `v1`) is also maintained (see
 testing; production consumers must always pin the exact `MAJOR.MINOR.PATCH`
 tag so upgrades are explicit and reviewed.
 
+## Account-level singletons
+
+Some AWS resources are unique per account rather than per module instance —
+for example, an account may only have **one** `token.actions.githubusercontent.com`
+IAM OIDC provider per provider URL. Modules that create this kind of resource
+(e.g. `github-oidc`) must accept a `create_<resource>` boolean input (default
+`true`) plus a corresponding `<resource>_arn` input (default `null`) so every
+consumer after the first in a given account can pass `create_<resource> =
+false` and reference the existing resource instead of failing on a duplicate-
+resource error at apply time.
+
 ## Tagging and naming
 
 - Resource names use the pattern `${var.name_prefix}-<resource>` and every
