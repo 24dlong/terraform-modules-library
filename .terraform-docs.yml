@@ -1,0 +1,13 @@
+formatter: markdown table
+
+sections:
+  hide:
+    - providers
+
+sort:
+  enabled: true
+  by: name
+
+output:
+  file: README.md
+  mode: inject
