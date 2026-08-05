@@ -1,3 +1,9 @@
+## 0.3.1 (2026-08-04)
+
+
+- chore(deps): update terraform aws to v6 (#12)
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+
 ## 0.3.0 (2026-07-31)
 
 
