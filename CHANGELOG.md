@@ -1,3 +1,14 @@
+## 0.3.2 (2026-08-05)
+
+
+- chore(deps): update minor-updates (#10)
+- * chore(deps): update minor-updates
+- * ci: explicitly set top-level permissions
+- * fix: pin python version
+- ---------
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+Co-authored-by: Daniel Long <24.daniel.long@gmail.com>
+
 ## 0.3.1 (2026-08-04)
 
 
