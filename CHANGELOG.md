@@ -1,3 +1,8 @@
+## 0.3.4 (2026-08-06)
+
+
+- fix: fix non-deterministic terraform docs run (#13)
+
 ## 0.3.3 (2026-08-06)
 
 
