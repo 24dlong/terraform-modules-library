@@ -1,3 +1,9 @@
+## 0.3.5 (2026-08-10)
+
+
+- chore(deps): update dependency checkov to v3.3.9 (#16)
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+
 ## 0.3.4 (2026-08-06)
 
 
