@@ -1,3 +1,8 @@
+## 0.4.0 (2026-08-21)
+
+
+- feat: support github environments for OIDC (#19)
+
 ## 0.3.7 (2026-08-21)
 
 
