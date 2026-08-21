@@ -1,6 +1,7 @@
-# GitHub Actions OIDC identity provider + a least-privilege, repo/branch-
-# scoped IAM deployment role. No long-lived AWS access keys are created or
-# required; GitHub Actions authenticates by exchanging its OIDC token for
+# GitHub Actions OIDC identity provider + a least-privilege, repo-scoped
+# IAM deployment role (optionally limited to a branch or GitHub
+# Environment). No long-lived AWS access keys are created or required;
+# GitHub Actions authenticates by exchanging its OIDC token for
 # short-lived credentials via sts:AssumeRoleWithWebIdentity.
 
 locals {
@@ -9,7 +10,19 @@ locals {
   # must supply the existing provider's ARN.
   oidc_provider_arn = var.create_oidc_provider ? aws_iam_openid_connect_provider.github[0].arn : var.github_oidc_provider_arn
 
-  github_subject = var.allow_all_branches ? "repo:${var.github_org}/${var.github_repo}:*" : "repo:${var.github_org}/${var.github_repo}:ref:refs/heads/${var.github_branch}"
+  repo_prefix = "repo:${var.github_org}/${var.github_repo}"
+
+  # GitHub percent-encodes ":" in claim values (e.g. environment names).
+  environment_claim = var.github_environment == null ? null : replace(var.github_environment, ":", "%3A")
+
+  # GitHub puts `environment:<name>` in `sub` when the job sets `environment:`,
+  # and only uses `ref:refs/heads/<branch>` when it does not. Jobs that use a
+  # GitHub Environment will not match a branch-only trust policy.
+  github_subject = (
+    var.allow_all_branches ? "${local.repo_prefix}:*" :
+    local.environment_claim != null ? "${local.repo_prefix}:environment:${local.environment_claim}" :
+    "${local.repo_prefix}:ref:refs/heads/${var.github_branch}"
+  )
 }
 
 resource "aws_iam_openid_connect_provider" "github" {
