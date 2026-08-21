@@ -110,7 +110,7 @@ workflow:
 
 The exact `terraform`, `terraform-docs`, `checkov`, and `pre-commit` versions
 are pinned once in [`.tool-versions`](../.tool-versions) at the repository
-root and installed via `mise` by both `make setup-lint` and the pull-request
+root and installed via `mise` by both `make setup-env` and the pull-request
 workflow, so local and CI runs always resolve identical tool versions.
 
 ## Release process
