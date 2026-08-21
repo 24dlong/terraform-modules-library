@@ -1,3 +1,8 @@
+## 0.3.7 (2026-08-21)
+
+
+- fix: remove extra setup-lint command (#20)
+
 ## 0.3.6 (2026-08-21)
 
 
