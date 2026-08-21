@@ -1,18 +1,22 @@
 # github-oidc
 
 GitHub Actions OIDC identity provider plus a least-privilege IAM role scoped
-to a single GitHub repository (and optionally a single branch). GitHub
-Actions exchanges its OIDC token for short-lived AWS credentials via
-`sts:AssumeRoleWithWebIdentity` — no long-lived AWS access keys are created
-or required anywhere.
+to a single GitHub repository (and optionally a single branch or GitHub
+Environment). GitHub Actions exchanges its OIDC token for short-lived AWS
+credentials via `sts:AssumeRoleWithWebIdentity` — no long-lived AWS access
+keys are created or required anywhere.
 
 Security notes:
 
 - The trust policy's `token.actions.githubusercontent.com:sub` condition
   restricts assumption to `repo:<org>/<repo>:ref:refs/heads/<branch>` by
-  default. Set `allow_all_branches = true` only when broader access across
-  every branch/ref in the repository is explicitly required; the role
-  remains scoped to a single repository either way.
+  default. Set `github_environment` when the assuming job uses
+  `environment:` (GitHub then puts the environment in `sub` instead of the
+  branch). Set `allow_all_branches = true` only when broader access across
+  every branch/ref/environment in the repository is explicitly required; the
+  role remains scoped to a single repository either way. When trusting an
+  Environment, restrict which branches can use it with GitHub Environment
+  deployment branch rules.
 - This module grants **no permissions** to the role itself. Callers attach
   their own least-privilege permissions via `managed_policy_arns` and/or
   `inline_policy_json`.
@@ -57,9 +61,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
-| <a name="input_allow_all_branches"></a> [allow\_all\_branches](#input\_allow\_all\_branches) | Whether to trust every branch/ref in the given repository (`repo:<org>/<br/><repo>:*`) instead of restricting to a single branch. Must only be set to<br/>`true` when broader access across branches is explicitly required; the<br/>role is still scoped to a single repository either way. | `bool` | `false` | no |
+| <a name="input_allow_all_branches"></a> [allow\_all\_branches](#input\_allow\_all\_branches) | Whether to trust every branch/ref/environment in the given repository<br/>(`repo:<org>/<repo>:*`) instead of restricting to a single branch or<br/>GitHub Environment. Must only be set to `true` when broader access<br/>across branches is explicitly required; the role is still scoped to a<br/>single repository either way. Takes precedence over github\_branch and<br/>github\_environment. | `bool` | `false` | no |
 | <a name="input_create_oidc_provider"></a> [create\_oidc\_provider](#input\_create\_oidc\_provider) | Whether to create the `token.actions.githubusercontent.com` IAM OIDC<br/>identity provider. AWS accounts may only have one OIDC provider per<br/>provider URL, so only the first consumer in a given account should set<br/>this to `true`; every subsequent consumer must set this to `false` and<br/>supply the existing provider's ARN via `github_oidc_provider_arn`. | `bool` | `true` | no |
-| <a name="input_github_branch"></a> [github\_branch](#input\_github\_branch) | Branch trusted to assume this role. Ignored when allow\_all\_branches is true. | `string` | `"main"` | no |
+| <a name="input_github_branch"></a> [github\_branch](#input\_github\_branch) | Branch trusted to assume this role. Ignored when allow\_all\_branches is<br/>true or github\_environment is set. | `string` | `"main"` | no |
+| <a name="input_github_environment"></a> [github\_environment](#input\_github\_environment) | GitHub Environment name trusted to assume this role<br/>(`repo:<org>/<repo>:environment:<name>`). Set this when the assuming<br/>job uses `environment:` — GitHub then puts the environment in `sub`<br/>instead of the branch ref, so a branch-only trust policy will not<br/>match. Ignored when allow\_all\_branches is true. Restrict which<br/>branches can use the Environment with GitHub Environment deployment<br/>branch rules, not this IAM condition. | `string` | `null` | no |
 | <a name="input_github_oidc_provider_arn"></a> [github\_oidc\_provider\_arn](#input\_github\_oidc\_provider\_arn) | ARN of an existing `token.actions.githubusercontent.com` IAM OIDC<br/>provider. Required (must not be `null`) when `create_oidc_provider` is<br/>`false`; ignored when `create_oidc_provider` is `true`. | `string` | `null` | no |
 | <a name="input_github_org"></a> [github\_org](#input\_github\_org) | GitHub organization or user that owns the repository trusted to assume this role (e.g. "24dlong"). | `string` | n/a | yes |
 | <a name="input_github_repo"></a> [github\_repo](#input\_github\_repo) | GitHub repository name (without the owner) trusted to assume this role. | `string` | n/a | yes |

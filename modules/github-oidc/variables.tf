@@ -47,17 +47,42 @@ variable "github_repo" {
 }
 
 variable "github_branch" {
-  description = "Branch trusted to assume this role. Ignored when allow_all_branches is true."
+  description = <<-EOT
+    Branch trusted to assume this role. Ignored when allow_all_branches is
+    true or github_environment is set.
+  EOT
   type        = string
   default     = "main"
 }
 
+variable "github_environment" {
+  description = <<-EOT
+    GitHub Environment name trusted to assume this role
+    (`repo:<org>/<repo>:environment:<name>`). Set this when the assuming
+    job uses `environment:` — GitHub then puts the environment in `sub`
+    instead of the branch ref, so a branch-only trust policy will not
+    match. Ignored when allow_all_branches is true. Restrict which
+    branches can use the Environment with GitHub Environment deployment
+    branch rules, not this IAM condition.
+  EOT
+  type        = string
+  default     = null
+  nullable    = true
+
+  validation {
+    condition     = var.github_environment == null || length(trimspace(var.github_environment)) > 0
+    error_message = "github_environment must be a non-empty GitHub Environment name when set."
+  }
+}
+
 variable "allow_all_branches" {
   description = <<-EOT
-    Whether to trust every branch/ref in the given repository (`repo:<org>/
-    <repo>:*`) instead of restricting to a single branch. Must only be set to
-    `true` when broader access across branches is explicitly required; the
-    role is still scoped to a single repository either way.
+    Whether to trust every branch/ref/environment in the given repository
+    (`repo:<org>/<repo>:*`) instead of restricting to a single branch or
+    GitHub Environment. Must only be set to `true` when broader access
+    across branches is explicitly required; the role is still scoped to a
+    single repository either way. Takes precedence over github_branch and
+    github_environment.
   EOT
   type        = bool
   default     = false
