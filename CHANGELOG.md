@@ -1,3 +1,9 @@
+## 0.3.6 (2026-08-21)
+
+
+- chore(deps): update 24dlong/github-actions-library action to v4 (#18)
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+
 ## 0.3.5 (2026-08-10)
 
 
