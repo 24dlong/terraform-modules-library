@@ -16,4 +16,4 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v7
 
-      - uses: 24dlong/github-actions-library/actions/quality-gate@v4
+      - uses: 24dlong/github-actions-library/actions/quality-gate@v5
