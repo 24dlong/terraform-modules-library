@@ -34,8 +34,8 @@ in-repo module during CI, not a tagged release.
   (raise the floor only for a feature all modules need; never remove the
   ceiling without a major module version bump).
 - **AWS provider:** modules declare `required_providers { aws = { source =
-  "hashicorp/aws", version = ">= 5.0, < 6.0.0" } }` unless a specific module
-  requires a newer major version, in which case that is a breaking (MAJOR)
+  "hashicorp/aws", version = "< 7.0.0" } }` (compatible with AWS provider
+  v5 and v6). Raising the ceiling past a new major is a breaking (MAJOR)
   change for that module.
 - Modules must not pin an exact provider version; only a compatible range.
   Root configurations (shared-foundation, generated application infra) are
@@ -50,7 +50,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.0, < 6.0.0"
+      version = "< 7.0.0"
     }
   }
 }

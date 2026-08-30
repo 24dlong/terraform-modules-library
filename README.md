@@ -17,7 +17,7 @@ requirements every module in this repository must follow.
 | `route53-acm` | Import-compatible Route 53 hosted zone reference + DNS-validated `us-east-1` ACM certificate | planned |
 | `github-oidc` | GitHub Actions OIDC provider + least-privilege, repo/branch-scoped deployment role | implemented |
 | `nextjs-lambda` | ECR repository, Lambda container function (AWS Lambda Web Adapter), Function URL | planned |
-| `nextjs-assets` | Private, encrypted S3 bucket for Next.js static assets | planned |
+| `nextjs-assets` | Private, encrypted S3 bucket for Next.js static assets | implemented |
 | `nextjs-cloudfront` | CloudFront distribution fronting the Lambda Function URL and S3 assets origins via OAC | planned |
 
 Each module will be documented individually in its own `README.md` once
