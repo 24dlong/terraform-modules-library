@@ -34,8 +34,8 @@ in-repo module during CI, not a tagged release.
   (raise the floor only for a feature all modules need; never remove the
   ceiling without a major module version bump).
 - **AWS provider:** modules declare `required_providers { aws = { source =
-  "hashicorp/aws", version = ">= 5.0, < 6.0.0" } }` unless a specific module
-  requires a newer major version, in which case that is a breaking (MAJOR)
+  "hashicorp/aws", version = "< 7.0.0" } }` (compatible with AWS provider
+  v5 and v6). Raising the ceiling past a new major is a breaking (MAJOR)
   change for that module.
 - Modules must not pin an exact provider version; only a compatible range.
   Root configurations (shared-foundation, generated application infra) are
@@ -50,7 +50,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.0, < 6.0.0"
+      version = "< 7.0.0"
     }
   }
 }
@@ -112,6 +112,33 @@ The exact `terraform`, `terraform-docs`, `checkov`, and `pre-commit` versions
 are pinned once in [`.tool-versions`](../.tool-versions) at the repository
 root and installed via `mise` by both `make setup-env` and the pull-request
 workflow, so local and CI runs always resolve identical tool versions.
+
+## Provider lock files
+
+Every module and example that has been `terraform init`'d must commit its
+`.terraform.lock.hcl`. That lock file must include provider package hashes
+for **all** platforms used locally and in CI:
+
+- `linux_amd64` (GitHub Actions `ubuntu-latest`)
+- `darwin_amd64` / `darwin_arm64` (local macOS)
+
+Plain `terraform init` only records the current host platform. Committing a
+single-platform lock file makes the `terraform_validate` pre-commit hook
+pass locally but fail on Linux CI with `files were modified by this hook`
+(CI's `terraform init` appends the missing platform hash).
+
+After adding a new module/example, or after changing a provider version
+constraint, regenerate locks with:
+
+```sh
+make providers-lock
+# or, scoped:
+make providers-lock DIRS="modules/<name> examples/<name>"
+```
+
+Then commit the updated `.terraform.lock.hcl` files. A lock file is
+complete when it has multiple `h1:` entries (one per platform), not a
+single host-only hash.
 
 ## Release process
 
