@@ -1,3 +1,22 @@
+## 0.5.0 (2026-08-31)
+
+
+- ci: update merge to use github app token (#23)
+- feat: add nextjs-assets module (#22)
+- * feat: add nextjs-assets module
+- Private S3 bucket for Next.js static assets with deferred CloudFront OAC
+policy, so consumers can deploy before a distribution exists.
+- Co-authored-by: Cursor <cursoragent@cursor.com>
+- * fix: commit multi-platform provider lock hashes
+- terraform init only records the host platform; CI on linux_amd64 was
+rewriting the lock file and failing terraform_validate with "files were
+modified". Document and add make providers-lock for future modules.
+- Co-authored-by: Cursor <cursoragent@cursor.com>
+- ---------
+- Co-authored-by: Cursor <cursoragent@cursor.com>
+- chore(deps): update 24dlong/github-actions-library action to v5 (#21)
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+
 ## 0.4.0 (2026-08-21)
 
 
