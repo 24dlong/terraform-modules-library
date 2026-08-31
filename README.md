@@ -60,6 +60,9 @@ time, including after pulling a Renovate PR that bumps `.tool-versions`.
   hooks. Safe to rerun anytime.
 - `make lint` — run all pre-commit hooks (formatting, docs, commit-msg lint,
   Terraform fmt/validate/checkov) against the full repository.
+- `make providers-lock` — regenerate `.terraform.lock.hcl` with hashes for
+  linux/darwin amd64+arm64 (required after adding a module/example or
+  changing provider constraints; see `docs/MODULE_STANDARDS.md`).
 
 ### Technologies
 
