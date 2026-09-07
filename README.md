@@ -14,7 +14,7 @@ requirements every module in this repository must follow.
 | Module | Purpose | Status |
 | --- | --- | --- |
 | `terraform-state` | Private, encrypted, versioned S3 Terraform state bucket with S3 native locking | implemented |
-| `route53-acm` | Import-compatible Route 53 hosted zone reference + DNS-validated `us-east-1` ACM certificate | planned |
+| `route53-acm` | Import-compatible Route 53 hosted zone reference + DNS-validated `us-east-1` ACM certificate | implemented |
 | `github-oidc` | GitHub Actions OIDC provider + least-privilege, repo/branch-scoped deployment role | implemented |
 | `nextjs-lambda` | ECR repository, Lambda container function (AWS Lambda Web Adapter), Function URL | planned |
 | `nextjs-assets` | Private, encrypted S3 bucket for Next.js static assets | implemented |
