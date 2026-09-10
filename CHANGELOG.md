@@ -1,3 +1,11 @@
+## 0.6.0 (2026-09-10)
+
+
+- feat: add route53-acm module for zone adopt and us-east-1 ACM (#24)
+- DNS-validated apex+wildcard cert with data-only Route 53 lookup, intended
+for per-app shared infra callers via providers = { aws = aws.us_east_1 }.
+- Co-authored-by: Cursor <cursoragent@cursor.com>
+
 ## 0.5.0 (2026-08-31)
 
 
