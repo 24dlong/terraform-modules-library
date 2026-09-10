@@ -86,10 +86,44 @@ consumer after the first in a given account can pass `create_<resource> =
 false` and reference the existing resource instead of failing on a duplicate-
 resource error at apply time.
 
+## Provider aliases / region remapping
+
+Most modules inherit the caller's default `aws` provider. When a module's
+resources **must** live in a fixed region (notably ACM certificates for
+CloudFront, which require `us-east-1`), prefer remapping the module's
+default `aws` provider to a caller-configured alias rather than declaring
+`configuration_aliases` inside the module. Remapping keeps
+`terraform validate` working when the module directory is treated as a root
+(CI / pre-commit); `configuration_aliases` currently break that path.
+
+Example (`route53-acm` — entire module runs in `us-east-1`):
+
+```hcl
+provider "aws" {
+  alias  = "us_east_1"
+  region = "us-east-1"
+}
+
+module "route53_acm" {
+  source = "..."
+  providers = {
+    aws = aws.us_east_1
+  }
+  # ...
+}
+```
+
+Do not hard-code a `provider "aws"` block inside a module; only document the
+required remapping (or `configuration_aliases`, if a future module truly
+needs two regions in one call) and let the root configure
+regions/credentials.
+
 ## Tagging and naming
 
 - Resource names use the pattern `${var.name_prefix}-<resource>` and every
   resource sets a common `tags` variable merged with any module-specific tags.
+  Domain-keyed modules (e.g. `route53-acm`, which adopts a zone by DNS name)
+  may omit `name_prefix` and document that departure in the module README.
 - No module may hard-code an AWS account ID, region, domain name, or
   application-specific value; those are always inputs.
 
