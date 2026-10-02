@@ -1,3 +1,9 @@
+## 0.7.0 (2026-10-02)
+
+
+- feat: add nextjs-lambda module (#25)
+- Co-authored-by: Cursor <cursoragent@cursor.com>
+
 ## 0.6.0 (2026-09-10)
 
 
