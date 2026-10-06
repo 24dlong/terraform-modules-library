@@ -1,3 +1,9 @@
+## 0.7.1 (2026-10-06)
+
+
+- chore: migrate to github-actions-library v6 (#26)
+- Co-authored-by: Cursor <cursoragent@cursor.com>
+
 ## 0.7.0 (2026-10-02)
 
 
