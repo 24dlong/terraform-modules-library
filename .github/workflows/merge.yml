@@ -10,13 +10,11 @@ permissions:
 
 jobs:
   publish:
-    runs-on: ubuntu-latest
     permissions:
       contents: write
-    steps:
-      - name: Publish
-        uses: 24dlong/github-actions-library/actions/publish@v6
-        with:
-          # requried to bypass branch protection
-          github-app-client-id: ${{ vars.GH_WORKFLOWS_APP_CLIENT_ID }}
-          github-app-private-key: ${{ secrets.GH_WORKFLOWS_APP_PRIVATE_KEY }}
+    uses: 24dlong/github-actions-library/.github/workflows/publish.yml@v7
+    with:
+      # required to bypass branch protection
+      github-app-client-id: ${{ vars.GH_WORKFLOWS_APP_CLIENT_ID }}
+    secrets:
+      github-app-private-key: ${{ secrets.GH_WORKFLOWS_APP_PRIVATE_KEY }}
