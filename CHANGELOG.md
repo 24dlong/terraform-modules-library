@@ -1,3 +1,17 @@
+## 0.8.0 (2026-10-09)
+
+
+- feat: add nextjs-cloudfront module and single-apply CloudFront wiring (#28)
+- Add the nextjs-cloudfront module: a CloudFront distribution in front of
+the nextjs-lambda Function URL through Lambda origin access control,
+with an optional S3 origin for /_next/static/*, an apex-to-www redirect
+CloudFront Function, baseline security headers, and TLS 1.2 minimum.
+- Add allow_cloudfront_invoke to nextjs-lambda so its CloudFront
+permissions are gated on a plan-time bool instead of the distribution
+ARN. That lets one root create the distribution and its permissions in
+a single apply.
+- Co-authored-by: Cursor <cursoragent@cursor.com>
+
 ## 0.7.2 (2026-10-08)
 
 
