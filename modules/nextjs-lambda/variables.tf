@@ -22,16 +22,33 @@ variable "image_tag" {
   default     = null
 }
 
+variable "allow_cloudfront_invoke" {
+  description = <<-EOT
+    Whether to grant `cloudfront_distribution_arn` permission to invoke the
+    Function URL. Requires `cloudfront_distribution_arn`. This is a separate
+    flag so the permissions can be planned while the distribution ARN is
+    still unknown (distribution created in the same apply).
+  EOT
+  type        = bool
+  default     = false
+}
+
 variable "cloudfront_distribution_arn" {
   description = <<-EOT
     ARN of the CloudFront distribution allowed to invoke the Function URL via
-    Origin Access Control (OAC). When omitted (`null`), no CloudFront
-    permissions are created and the Function URL is only reachable with
-    signed IAM requests from principals in this account. Pass the
-    distribution ARN in a later apply once the distribution exists.
+    Origin Access Control (OAC). Only used when `allow_cloudfront_invoke` is
+    `true`; may come straight from the `nextjs-cloudfront` module's
+    `distribution_arn` output in the same root. Without it, the Function URL
+    is only reachable with signed IAM requests from principals in this
+    account.
   EOT
   type        = string
   default     = null
+
+  validation {
+    condition     = !var.allow_cloudfront_invoke || var.cloudfront_distribution_arn != null
+    error_message = "cloudfront_distribution_arn is required when allow_cloudfront_invoke is true."
+  }
 }
 
 variable "architecture" {

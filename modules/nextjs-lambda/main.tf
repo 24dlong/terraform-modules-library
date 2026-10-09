@@ -9,7 +9,9 @@ locals {
   create_lambda = var.image_tag != null
   image_uri     = local.create_lambda ? "${aws_ecr_repository.this.repository_url}:${var.image_tag}" : null
 
-  create_cloudfront_permissions = local.create_lambda && var.cloudfront_distribution_arn != null
+  # Gated on a plan-time bool, not the ARN: when the distribution is created
+  # in the same apply its ARN is unknown, and count cannot depend on it.
+  create_cloudfront_permissions = local.create_lambda && var.allow_cloudfront_invoke
 }
 
 resource "aws_cloudwatch_log_group" "this" {
