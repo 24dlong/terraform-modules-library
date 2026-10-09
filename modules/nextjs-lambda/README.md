@@ -15,7 +15,7 @@ Security defaults:
   (`additional_policy_arns`) are opt-in.
 - ECR tags are immutable and images are scanned on push.
 - The log group has bounded retention (`log_retention_days`, default `14`).
-- When `cloudfront_distribution_arn` is set, `cloudfront.amazonaws.com` is
+- When `allow_cloudfront_invoke` is `true`, `cloudfront.amazonaws.com` is
   granted both `lambda:InvokeFunctionUrl` and `lambda:InvokeFunction`,
   scoped by `source_arn` to that distribution. Function URLs created after
   October 2025 require both actions. The second permission does not set
@@ -62,12 +62,28 @@ pushed before the repository exists:
 
 Set `image_tag` in the environment's tfvars so it shows up in the plan.
 
-## CloudFront wiring (second pass)
+## CloudFront wiring
 
 `nextjs-cloudfront` needs this module's `function_url`, and the CloudFront
-permissions here need that distribution's ARN. Apply without
-`cloudfront_distribution_arn` first, then pass the distribution's `arn`
-output in a later apply (same pattern as `nextjs-assets`).
+permissions here need that distribution's ARN. Neither depends on the other
+at the resource level, so both modules can reference each other in one root
+and one apply:
+
+```hcl
+module "nextjs_lambda" {
+  # ...
+  allow_cloudfront_invoke     = true
+  cloudfront_distribution_arn = module.nextjs_cloudfront.distribution_arn
+}
+```
+
+If the CloudFront module call is gated on `image_tag` with `count`, use
+`allow_cloudfront_invoke = var.image_tag != null` and
+`cloudfront_distribution_arn = one(module.nextjs_cloudfront[*].distribution_arn)`.
+
+`allow_cloudfront_invoke` is a plain bool because the distribution ARN is
+unknown until the distribution is created, and `count` cannot depend on an
+unknown value. See the `nextjs-cloudfront` README for the full wiring.
 
 ## Manual verification
 
@@ -136,8 +152,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_additional_policy_arns"></a> [additional\_policy\_arns](#input\_additional\_policy\_arns) | ARNs of additional IAM managed policies to attach to the Lambda execution role. | `list(string)` | `[]` | no |
+| <a name="input_allow_cloudfront_invoke"></a> [allow\_cloudfront\_invoke](#input\_allow\_cloudfront\_invoke) | Whether to grant `cloudfront_distribution_arn` permission to invoke the<br/>Function URL. Requires `cloudfront_distribution_arn`. This is a separate<br/>flag so the permissions can be planned while the distribution ARN is<br/>still unknown (distribution created in the same apply). | `bool` | `false` | no |
 | <a name="input_architecture"></a> [architecture](#input\_architecture) | Instruction set architecture of the Lambda function. Must match the pushed image's platform. | `string` | `"arm64"` | no |
-| <a name="input_cloudfront_distribution_arn"></a> [cloudfront\_distribution\_arn](#input\_cloudfront\_distribution\_arn) | ARN of the CloudFront distribution allowed to invoke the Function URL via<br/>Origin Access Control (OAC). When omitted (`null`), no CloudFront<br/>permissions are created and the Function URL is only reachable with<br/>signed IAM requests from principals in this account. Pass the<br/>distribution ARN in a later apply once the distribution exists. | `string` | `null` | no |
+| <a name="input_cloudfront_distribution_arn"></a> [cloudfront\_distribution\_arn](#input\_cloudfront\_distribution\_arn) | ARN of the CloudFront distribution allowed to invoke the Function URL via<br/>Origin Access Control (OAC). Only used when `allow_cloudfront_invoke` is<br/>`true`; may come straight from the `nextjs-cloudfront` module's<br/>`distribution_arn` output in the same root. Without it, the Function URL<br/>is only reachable with signed IAM requests from principals in this<br/>account. | `string` | `null` | no |
 | <a name="input_environment_variables"></a> [environment\_variables](#input\_environment\_variables) | Non-secret environment variables for the Lambda function (e.g.<br/>`AWS_LWA_PORT`, `AWS_LWA_READINESS_CHECK_PATH`, `NODE_ENV`). Values are<br/>stored in Terraform state and visible in the Lambda console; deliver<br/>secrets through Secrets Manager (`secret_arns`) instead. | `map(string)` | `{}` | no |
 | <a name="input_force_delete"></a> [force\_delete](#input\_force\_delete) | Whether to allow Terraform to delete the ECR repository even if it still<br/>contains images. Must remain `false` in any environment that holds real<br/>application images; only intended for disposable test/example deployments. | `bool` | `false` | no |
 | <a name="input_image_retention_count"></a> [image\_retention\_count](#input\_image\_retention\_count) | Number of most recent tagged images kept in the ECR repository. Older tagged images expire, so keep this above the number of releases you may need to roll back to. | `number` | `20` | no |
