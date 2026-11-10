@@ -137,7 +137,7 @@ curl -sI "$(terraform output -raw function_url)" # 403: unsigned requests are de
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.68.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.71.0 |
 
 ## Modules
 
