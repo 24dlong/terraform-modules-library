@@ -1,4 +1,4 @@
-.PHONY: lint setup-env providers-lock
+.PHONY: docs lint setup-env providers-lock
 
 # Installs the pinned tool versions from .tool-versions (terraform,
 # terraform-docs, checkov, pre-commit) via mise, plus the repository's git
@@ -9,6 +9,11 @@ setup-env:
 	mise install
 	mise exec -- pre-commit install
 	mise exec -- pre-commit install --hook-type commit-msg
+
+# Regenerates terraform-docs sections in module READMEs using the same
+# configuration as the pre-commit hook. Examples are excluded by the hook.
+docs:
+	mise exec -- pre-commit run terraform_docs --all-files
 
 # Runs all pre-commit hooks (formatting, docs, commit lint, terraform
 # fmt/validate/checkov) against the full repository.

@@ -58,6 +58,8 @@ time, including after pulling a Renovate PR that bumps `.tool-versions`.
 
 - `make setup-env` — install the pinned tool versions (via `mise`) and git
   hooks. Safe to rerun anytime.
+- `make docs` — generate or update the terraform-docs sections in module
+  READMEs.
 - `make lint` — run all pre-commit hooks (formatting, docs, commit-msg lint,
   Terraform fmt/validate/checkov) against the full repository.
 - `make providers-lock` — regenerate `.terraform.lock.hcl` with hashes for
