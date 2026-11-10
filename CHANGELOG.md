@@ -1,3 +1,13 @@
+## 0.8.1 (2026-11-10)
+
+
+- chore(deps): update terraform aws to v6.58.0 (#17)
+- * chore(deps): update minor-updates
+- * chore: update docs
+- ---------
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+Co-authored-by: Daniel Long <24.daniel.long@gmail.com>
+
 ## 0.8.0 (2026-10-09)
 
 
