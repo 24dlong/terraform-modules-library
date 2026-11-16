@@ -26,6 +26,7 @@ repos:
           - --hook-config=--path-to-file=README.md
           - --hook-config=--add-to-existing-file=true
           - --hook-config=--create-file-if-not-exist=true
+          - --args=--config=__GIT_WORKING_DIR__/.terraform-docs.yml
       - id: terraform_checkov
         args:
           - --args=--quiet
