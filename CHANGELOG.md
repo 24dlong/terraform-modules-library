@@ -1,3 +1,15 @@
+## 0.8.2 (2026-11-16)
+
+
+- fix: hide terraform-docs providers section (#30)
+- * fix: hide terraform-docs providers section so lockfile bumps don't break docs check
+- The root .terraform-docs.yml was never picked up because the hook runs
+per module directory. Pass it explicitly and regenerate READMEs.
+- Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+- * fix: terraform docs config
+- ---------
+- Co-authored-by: Claude Sonnet 5.5 <noreply@anthropic.com>
+
 ## 0.8.1 (2026-11-10)
 
 
