@@ -37,12 +37,6 @@ repository's versioning and consumption conventions. See
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9, < 2.0.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | < 7.0.0 |
 
-## Providers
-
-| Name | Version |
-| ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 6.71.0 |
-
 ## Modules
 
 No modules.
