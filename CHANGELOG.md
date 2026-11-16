@@ -1,3 +1,10 @@
+## 0.8.3 (2026-11-16)
+
+
+- chore(deps): update terraform aws to v6.72.0 (#29)
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+Co-authored-by: Daniel Long <24.daniel.long@gmail.com>
+
 ## 0.8.2 (2026-11-16)
 
 
