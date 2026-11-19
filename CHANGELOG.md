@@ -1,3 +1,9 @@
+## 0.8.4 (2026-11-19)
+
+
+- chore(deps): update minor-updates (#31)
+- Co-authored-by: 24dlong-renovate[bot] <286791535+24dlong-renovate[bot]@users.noreply.github.com>
+
 ## 0.8.3 (2026-11-16)
 
 
