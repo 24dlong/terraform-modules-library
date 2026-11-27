@@ -1,4 +1,4 @@
 terraform 1.17.2
 terraform-docs 0.25.1
-checkov 3.4.5
+checkov 3.4.6
 pre-commit 4.7.0
